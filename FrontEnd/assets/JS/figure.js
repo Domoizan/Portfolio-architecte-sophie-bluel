@@ -1,9 +1,9 @@
-class work {
+class work_card {
 
-    _figure
+    _workCard
 
-    constructor(src_img, title_img) {
-        this._figure=this.creat_figure(src_img, title_img)
+    constructor(work) {
+        this._workCard=this.creat_figure(work.imageUrl,work.title)
     }
     
     creat_figure (src_img, title_img) {
@@ -33,16 +33,7 @@ class work {
     }
     
     show (){
-    return this._figure
+    return this._workCard
     }
 
-}
-
-
-class works extends work {
-    _work
-    constructor(work){
-        super(work.imageUrl,work.title)
-        this._work=work
-    }
 }
