@@ -2,6 +2,7 @@
 /* Liste des travaux */
 let lst_works=[]
 let Menu_items = new Set()
+let filtre_actif = 0
 
 fetch("http://localhost:5678/api/works")
     .then((res)=>{
@@ -11,6 +12,7 @@ fetch("http://localhost:5678/api/works")
     }).then((res)=>{
         lst_works=res
         show_gallery()
+        show_filtre()
     })
     .catch((err)=> {
         console.log(err)

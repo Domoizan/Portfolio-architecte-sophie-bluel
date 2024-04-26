@@ -32,8 +32,7 @@ class work_card {
         return cap
     }
     
-    show (){
-    return this._workCard
+    show (galerie){
+        galerie.appendChild(this._workCard)
     }
-
 }
