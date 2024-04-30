@@ -215,3 +215,43 @@ footer nav ul {
     background-color: #1D6154;
     color: #FFF;
 }
+
+.login {
+	width: 50%;
+	margin: auto;
+}
+
+.login > * {
+	text-align: center;
+
+}
+.logint h2{
+	margin-bottom: 20px;
+}
+.login form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	text-align: center;
+}
+.login label {
+	margin: 2em 0 1em 0;
+}
+
+.err{
+	display: block;
+	height: 25px;
+	opacity: 1;
+	font-size: 1.25em;
+	color:red;
+	font-weight: 600;
+}
+
