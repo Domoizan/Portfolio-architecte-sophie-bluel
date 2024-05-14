@@ -6,11 +6,10 @@ class filtres {
     constructor(blck, lstCat) {
         this._blck=blck
         this.creatBt(lstCat)
-        console.log(this._lstBt)
     }
     
     creatBt(lstCat) {
-        let bt, elt, cl
+        let bt, elt
         let ok = true
         for( elt of lstCat ){
             bt = document.createElement("div")
