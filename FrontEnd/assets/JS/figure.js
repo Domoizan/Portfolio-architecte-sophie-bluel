@@ -1,15 +1,15 @@
 class work_card {
 
     _workCard
-
-    constructor(work) {
+ 
+    constructor(work, mode="portfolio") {
         this._workCard=this.creat_figure(work.imageUrl,work.title)
     }
     
-    creat_figure (src_img, title_img) {
+    creat_figure (src_img, title_img, mode="portfolio") {
         const figure = document.createElement("figure")
         figure.appendChild(this.creat_img(src_img,title_img))
-        figure.appendChild(this.creat_caption(title_img))
+        if(mode==="portfolio")figure.appendChild(this.creat_caption(title_img))
         return figure
     }
 
