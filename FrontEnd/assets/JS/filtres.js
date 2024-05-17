@@ -1,8 +1,17 @@
+/**
+ * création et afichage du block filtre depuis la des catégories
+ * @private {HTMLDivElement} _blck block cible
+ * @private {HTMLDivElement[]} _lstBt tableau des boutons de filtrage
+ */
 
 class filtres {
-    _blck
+    _blck 
     _lstBt=[]
-
+    /**
+     * 
+     * @param {HTMLDivElement} blck block cible
+     * @param {string[]} lstCat tableau des categories
+     */
     constructor(blck, lstCat) {
         this._blck=blck
         this.creatBt(lstCat)
@@ -17,7 +26,7 @@ class filtres {
                 bt.setAttribute("class","filtre actif")
                 ok=false
             }else{
-                bt.setAttribute("class","filtre")
+                bt.setAttribute("class","filtre clickable")
                 bt.addEventListener("click",appFiltre)
             } 
             bt.setAttribute("id",`filtre_${elt[0]}`)
@@ -27,7 +36,9 @@ class filtres {
         }
     }
 
-
+    /**
+     * Ajout des boutons dans le div cible
+     */
     showFiltre() {
         let elt
         for(elt of this._lstBt){

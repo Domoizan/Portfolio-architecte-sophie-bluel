@@ -1,4 +1,6 @@
-
+/**
+ * obtenir tous les projets
+ */
 function GetApiWorks(){
 fetch("http://localhost:5678/api/works")
     .then((res)=>{
@@ -15,6 +17,13 @@ fetch("http://localhost:5678/api/works")
         console.log(err)
     })
 }
+
+/**
+ * 
+ * @param {string} userMail mail utilisateur
+ * @param {string} userPwd pasword utilisateur
+ */
+
 
 function PostApiUser(userMail,userPwd){
     const body = JSON.stringify({ 
