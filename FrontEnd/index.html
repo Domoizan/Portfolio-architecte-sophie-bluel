@@ -14,6 +14,8 @@
 	<meta name="description" content="">
 	
 	<link rel="stylesheet" href="./assets/style.css">
+	
+	<script src="./assets/JS/form.js" defer></script>
 	<script src="./assets/JS/filtres.js" defer></script>
 	<script src="./assets/JS/figure.js" defer></script>
 	<script src="./assets/JS/modale.js" defer></script>
@@ -28,7 +30,7 @@
 		<ul>
 			<li><a href="./index.html#portfolio">Projets</a></li>
 			<li><a href="./index.html#contact">Contact</a></li>
-			<li><a href="./login.html">Login</a></li>
+			<li><a href="./login.html" id="login">Login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -39,6 +41,7 @@
 			<img src="./assets/images/sophie-bluel.png" alt="">
 		</figure>
 		<article>
+			<span class="editInro clickable hidden" id="edit_intro"><i class="fa-regular fa-pen-to-square fa-padding-right"></i>modifier</span>
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
@@ -47,7 +50,7 @@
 	</section>
 	<section id="portfolio">
 		<div class="header_portfolio">
-			<h2>Mes Projets</h2><span class="edit hidden" id="edit"><i class="fa-regular fa-pen-to-square fa-padding-right"></i>modifier</span>
+			<h2>Mes Projets</h2><span class="edit clickable hidden" id="edit"><i class="fa-regular fa-pen-to-square fa-padding-right"></i>modifier</span>
 		</div>
 			<div class="filtres" id="blk_filtre">
 			<!--

@@ -33,6 +33,7 @@ class work_card {
 
     creat_figure_portfolio(work){
         const figure = document.createElement("figure")
+        figure.setAttribute("id",`pf_${work.id}`)
         figure.appendChild(this.creat_img(work))
         figure.appendChild(this.creat_caption(work.title))
         return figure
@@ -40,6 +41,7 @@ class work_card {
 
     creat_figure_edit(work,event){
         const figure = document.createElement("figure")
+        figure.setAttribute("id",`ed_${work.id}`)
         figure.appendChild(this.creat_img(work))
         figure.appendChild(this.creat_DelIcon(work,event))
         return figure

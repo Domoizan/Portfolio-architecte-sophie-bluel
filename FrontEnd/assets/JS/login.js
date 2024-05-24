@@ -13,6 +13,8 @@ mail.addEventListener("blur",(elt)=>{
 })
 */
 
+window.localStorage.clear("user")
+
 mail.addEventListener("change",(elt)=>{
     if(!regexp.test(elt.target.value.trim())){  
         document.getElementById("err").innerHTML=`Email ${elt.target.value} non valid`

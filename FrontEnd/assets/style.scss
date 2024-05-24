@@ -49,6 +49,8 @@ table {
 /** end reset css**/
 
 @import "modales";
+@import "ModAjout";
+
 
 body {
 	max-width: 1140px;
@@ -141,6 +143,15 @@ li:hover {
 .hidden{
 	display: none;
 }
+
+.editInro{
+	position: relative;
+	font-family: 'Work Sans' ;
+	font-size: 14px;
+	text-align: justify;
+	top:-2em;
+}
+
 
 .edit{
 	position: absolute;

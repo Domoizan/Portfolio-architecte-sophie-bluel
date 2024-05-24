@@ -2,9 +2,14 @@
 /* Liste des travaux */
 let lst_works=JSON.parse(window.localStorage.getItem("lst_works"))
 /* info user connecté */
-const user=JSON.parse(window.localStorage.getItem("user"))
-
-/* utilisée pour stocker la liste des catégories */ 
+/**
+ * info user authentifié
+ * @var {userid:number,token:'md5sum'} user 
+ */
+let user=JSON.parse(window.localStorage.getItem("user"))
+/* liste categories */
+let LstCat=JSON.parse(window.localStorage.getItem("LstCat"))
+/* utilisée pour stocker la liste des catégories  */
 let Menu_items = new Set()
 /* filtre actif */
 let filtre_actif = 0
@@ -31,7 +36,7 @@ const options_modale_galerie={
             id:"btBack",
             class:"btBack clickable hidden",
             content:'<i class="fa-solid fa-arrow-left"></i>',// Libellé du bouton ou icone 
-            evtfct:[{ evt:"click", fct: newProjet }] /* tableau d'objet [{ evt:"event", fct:function ] }*/  
+            evtfct:[{ evt:"click", fct: editGalerie }] /* tableau d'objet [{ evt:"event", fct:function ] }*/  
             }]
     },
     main:{
@@ -51,37 +56,43 @@ const options_modale_galerie={
         id:"bt_Ajout",
         class:"modale__button clickable",
         content:"Ajout photo",
-        evtfct:[{ evt:"click", fct: newProjet }] /* tableau d'objet [{ evt:"event", fct:function ] }*/
+        evtfct:[{ evt:"click", fct: formAjoutPhoto }] /* tableau d'objet [{ evt:"event", fct:function ] }*/
     }
 }
 
+let modale_galerie=null
+let form=null
 
 
-/*
-    Appel API en l'absence "lst_works" dans le localStorage 
-*/
+
+
+
+
+/* Affichage de la galerie */
+//AffGalerie()
+
 if(lst_works===null){
+    console.log("lst_works===null")
     GetApiWorks()
-}else{
+  }else{
+    console.log("lst_works!==null")
     show_gallery()
-}
+  }
+
 
 /*
-    affichage des filtres est masquage du lien "modifier" en l'absence de "user" dans le localStorage
-    utilisateur non Authentifié
+    affichage des filtres est masquage des liens "modifier" en l'absence de "user" 
+    dans le localStorage => utilisateur non Authentifié
 */
+
 if(user===null){
-    show_filtre()
+    if(lst_works!==null)show_filtre()
     document.getElementById("edit").classList.add("hidden")
+    document.getElementById("edit_intro").classList.add("hidden")
 }else{
     document.getElementById("edit").classList.remove("hidden")
+    document.getElementById("edit_intro").classList.remove("hidden")
+    document.getElementById("edit").addEventListener("click",editGalerie)
+    document.getElementById("login").removeChild(document.getElementById("login").firstChild)
+    document.getElementById("login").appendChild(document.createTextNode("Logout"))
 }
-
-
-
-options_modale_galerie.main.innerhtml=(show_gallery(lst_works,"edit"))
-const modale_galerie= new modale(document.getElementById("modale-contener"),"galerie",options_modale_galerie)
-modale_galerie.showModale()
-
-
-//<i class="fa-regular fa-image"></i> image

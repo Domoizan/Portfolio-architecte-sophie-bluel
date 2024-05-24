@@ -50,7 +50,7 @@ class modale {
                 id:"btBack",
                 class:"btBack hidden",
                 content:'<i class="fa-solid fa-arrow-left"></i>',// Libellé du bouton ou icone 
-                evtfct:[{ evt:"click", fct: newProjet }] /* tableau d'objet [{ evt:"event", fct:function ] }*/  
+                evtfct:[{ evt:"click", fct: editGalerie }] /* tableau d'objet [{ evt:"event", fct:function ] }*/  
                 }]
         },
         main:{
@@ -71,7 +71,7 @@ class modale {
             id:"bt_commit",
             class:"modale__button",
             Content:"Ajout photo",
-            evtfct:[{ evt:"click", fct: newProjet }] /* tableau d'objet [{ evt:"event", fct:function ] }*/
+            evtfct:[{ evt:"click", fct: formAjoutPhoto }] /* tableau d'objet [{ evt:"event", fct:function ] }*/
         }
     }){
         this._block=block
@@ -185,6 +185,51 @@ class modale {
                 element.elt.setAttribute(att.name,att.val)
             } )
             cible.appendChild(element.elt)
+        })
+    }
+
+    appendBlock(blk,cible=this._main){
+        this.DelHtmmlContent(cible)
+        cible.appendChild(blk)
+    }
+
+    ChangeHtmlContent(tab_HTMLElement, cible=this._main){
+        this.DelHtmmlContent(cible)
+        this.AppendHtmlContent(tab_HTMLElement, cible)
+    }
+
+    DelHtmmlContent(cible=this._main){
+        while(cible.firstChild)cible.removeChild(cible.firstChild)
+    }
+
+    ChangeText(texte, cible){
+        cible.removeChild(cible.firstChild)
+        cible.appendChild(document.createTextNode(texte))
+    }
+
+    setAttr(attr,cible){
+        attr.forEach(elt=>{
+            cible.setAttribute(elt.name,elt.val)
+        })
+    }
+
+    removeClass(classe,cible){
+        cible.classList.remove(classe)
+    }
+
+    addClass(classe,cible){
+        cible.classList.add(classe)
+    }
+
+    addEvent(events,cible){
+        events.forEach(elt=>{
+            cible.addEventListener(elt.evt,elt.fct)
+        })
+    }
+
+    removeEvent(events,cible){
+        events.forEach(elt=>{
+            cible.removeEventListener(elt.evt,elt.fct)
         })
     }
 
