@@ -11,7 +11,12 @@ fetch("http://localhost:5678/api/works")
         } 
     }).then((res)=>{
         lst_works=res
-        window.localStorage.setItem("lst_works", JSON.stringify(res))
+        storLstWorks={
+            timeEnrg : Date.now(),
+            lst_works : res
+        }
+        window.localStorage.setItem("storLstWorks", JSON.stringify(storLstWorks))
+        //window.localStorage.setItem("lst_works", JSON.stringify(res))
         show_gallery()
         if(user===null)show_filtre()
         return res
@@ -22,9 +27,74 @@ fetch("http://localhost:5678/api/works")
     })
 }
 
+/*
+curl -X 'POST' \
+  'http://localhost:5678/api/works' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNjUzMjg5NywiZXhwIjoxNzE2NjE5Mjk3fQ.r4WoSOALD2JETh-j5rsfr1xhRNNipUOAOWr6XDWOays' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'image=@cookie.jpg;type=image/jpeg' \
+  -F 'title=titre' \
+  -F 'category=1
+*/
+
 /**
- * obtenir tous les projets
+ * 
+ * @param {{"FormData"}} data 
+ * @return {[
+                {
+                    "id": number,
+                    "title": "string",
+                    "imageUrl": "string",
+                    "categoryId": number,
+                    "userId": number,
+                    "category": {
+                    "id": number,
+                    "name": "string"
+                    }
+                }
+            ]} 
  */
+function PostApiWorks(data){
+    const auth=`Bearer ${user.token}`
+    const head={
+        "accept" :"application/json",
+        "Authorization" : auth,
+    }
+    fetch("http://localhost:5678/api/works",{
+     method: "POST",
+     headers: head,
+     body: data
+    }).then((res)=>{
+        if(res.ok){
+            return res.json().then((res)=>{
+                AppendCardLstWork(res)
+                return res
+            })
+        } else {
+            switch (res.status){
+                case 401 : 
+                    alert("Utilisateur non autorisé.")
+                    break;  
+                case 500 : 
+                    alert(`Utilisateur "${userMail}" non reconnu.`)
+                    break;
+                default:
+                    alert(`Erreur inatendu ${res.status}.`)
+            }
+        }
+    })
+    .catch((err)=> {
+        console.log(err)
+    })
+}
+
+
+
+/**
+ * obtenir toutes les categories 
+ * non utilisée pour le moment
+
 async function GetApiCategories(){
     fetch("http://localhost:5678/api/categories")
         .then((res)=>{
@@ -41,14 +111,13 @@ async function GetApiCategories(){
             console.log(err)
         })
     }
+ */
 
 /**
  * 
  * @param {string} userMail mail utilisateur
  * @param {string} userPwd pasword utilisateur
  */
-
-
 function PostApiUser(userMail,userPwd){
     const body = JSON.stringify({ 
      email : userMail,
@@ -90,7 +159,6 @@ function PostApiUser(userMail,userPwd){
          console.log(err)
      })
  }
- 
 /**
  * Suppression d'un projet
  * 

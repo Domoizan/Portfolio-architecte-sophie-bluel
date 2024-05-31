@@ -12,6 +12,7 @@ class work_card {
      * 
      * @param {{id: number, title: string, imageUrl: string, categoryId: number, userId: number, category: {id: number,name: string}}} work fiche d'un projet
      * @param {string} mode 
+     *
      */
     constructor(work, mode="portfolio") {
         this._workCard=this.creat_figure(work,mode)
@@ -47,13 +48,13 @@ class work_card {
         return figure
     }
     
-    //index = fruits.findIndex((fruit) => fruit === "fraise");
     creat_DelIcon (work, event){
         const i = document.createElement("i")
         const index=event.findIndex((elt) => elt.tag==="i")
         i.setAttribute("id",`ico_${work.id}`)
         i.setAttribute("class","fa-solid fa-trash-can clickable")
         i.setAttribute("data-value",`${work.id}`)
+        i.setAttribute("tabindex","0")
         if( index >= 0 ) event[index].evts.forEach(element => {
             i.addEventListener(element.name,element.fct)
         });
@@ -81,8 +82,6 @@ class work_card {
         return cap
     }
 
-
-    
     show (galerie){
         galerie.appendChild(this._workCard)
     }

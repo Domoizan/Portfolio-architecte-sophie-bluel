@@ -50,6 +50,7 @@ bt_submit.addEventListener("click", (elt)=>{
             msg=`${msg}\rSaisie Password obligatoire`
         }
     }
+    console.log(`message = ${msg}`)
     if(msg!==""){
         document.getElementById("err").innerHTML=msg
     }else{
