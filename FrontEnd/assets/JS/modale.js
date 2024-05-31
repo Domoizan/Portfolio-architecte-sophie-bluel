@@ -56,8 +56,8 @@ class modale {
         main:{
             id:"main",
             class:"modale__gallery",
-            //innerhtml:null //contenu vide
-            innerhtml:[{elt:null,att:{name:"",val:""}}] //HTMLElement du contenu a afficher
+            innerhtml:null //contenu vide
+            //innerhtml:[{elt:null,att:{name:"",val:""}}] //HTMLElement du contenu a afficher
         },
         separateur:{
             id:"sep",
@@ -72,6 +72,10 @@ class modale {
             class:"modale__button",
             Content:"Ajout photo",
             evtfct:[{ evt:"click", fct: formAjoutPhoto }] /* tableau d'objet [{ evt:"event", fct:function ] }*/
+        },
+        err:{
+            id:"msgErr",
+            class:"modale__err"
         }
     }){
         this._block=block
@@ -123,12 +127,15 @@ class modale {
         footer.setAttribute("id",opt.footer.id)
         footer.setAttribute("class",opt.footer.class)
         this._foot=footer
+        const msg=document.createElement("P")
+        msg.setAttribute("id",opt.err.id)
+        msg.setAttribute("class",opt.err.class)
+        footer.appendChild(msg)
         /* CTA */
         this.CreatButton (opt.cta,this._btFooter)
     }
 
 /**
- * 
  * @param {} opt options du boutons -> cta pour footer et bt pour header
  * @param {*} cible btFooter pour le footer et btHeader pour header
  */

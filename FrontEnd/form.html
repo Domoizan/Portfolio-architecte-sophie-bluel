@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./assets/JS/script.js" defer></script>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+   <form id="form">
+    <input type="file" id="file" name="image">
+    <input type="text" id="title" name="title">
+    <input type="number" id="category" name="category">
+    <input type="button" id="bt" value="envoie">
+   </form> 
+   <div id="preview">
+
+   </div>
+</body>
+<script>
+
+
+
+function imgPreview(file){
+    const cible=document.getElementById("preview")
+    let image=document.createElement("img")
+    image.src=URL.createObjectURL(file)
+    image.classList.add("modAjout__imgPreview")
+    cible.appendChild(image)
+}
+
+function defUnit(val){
+    let idx=0
+    while((val / Math.pow(1024,idx)) > 1){idx++}
+    return idx-1
+}
+
+function ctrlFile(e){
+  const files= e.target.files
+  document.getElementById("preview").innerText=''
+  try{
+    if(files.length === 0 || files[0]===null)throw "Aucun Fichier selectionnée"
+    const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
+    if( taille > maxSize){
+        let msg=`Fichier trop volumineux : ${taille} ${unit[defUnit(files[0].size)]} > ${maxSize} ${unit[idxUnitMaxSize]}`
+        throw msg
+    } 
+    console.log("index = " + typeFile.findIndex((type)=>files[0].type===type))
+    if(typeFile.findIndex((type)=>files[0].type===type)==-1)throw `Les fichiers au format "${files[0].type}" ne sont pas acceptés`
+  }
+  catch(err){
+    document.getElementById("preview").appendChild(document.createTextNode(err))
+    return
+  }
+  imgPreview(files[0])
+}
+
+
+document.getElementById("file").addEventListener("change",ctrlFile)
+     const bt=document.getElementById("bt")
+     
+     
+    bt.addEventListener("click",(e)=>{
+        if(ctrlForm()){
+            const formdata = new FormData()
+            formdata.append("image", document.getElementById("file").files[0])
+            formdata.append("title",document.getElementById("title").value)
+            formdata.append("category",document.getElementById("category").value)
+            PostApiWorks(formdata)
+        }
+    )
+
+    
+    function PostApiWorks(data){
+        const auth= `Bearer ${user.token}`
+        const head={
+            "accept" :"application/json",
+            "Authorization" : auth
+        }
+        
+        fetch("http://localhost:5678/api/works",{
+         method: "POST",
+         headers: head,
+         body: data
+        }).then((res)=>{
+            if(res.ok){
+                return res.json().then(res =>{ 
+                    console.log(res)
+                })
+            } else {
+                switch (res.status){
+                    case 400 : 
+                        console.log("Requête invalide.")
+                        break; 
+                    case 401 : 
+                        console.log("Utilisateur non autorisé.")
+                        break;  
+                    case 500 : 
+                        console.log(`Erreur inattendue ${res.status}.`)
+                        break;
+                    default:
+                        console.log(`Erreur inatendu ${res.status}.`)
+                }
+            }
+        })
+        .catch((err)=> {
+            //console.log("erreur" + res)
+            console.log(err)
+        })
+    }
+</script>
+</html>
