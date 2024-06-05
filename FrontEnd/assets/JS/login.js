@@ -3,15 +3,6 @@ const bt_submit=document.getElementById("submit")
 const regexp= new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+")
 const mail=document.getElementById("email")
 const pwd=document.getElementById("pwd")
-/*
-mail.addEventListener("blur",(elt)=>{
-    if(!regexp.test(elt.target.value.trim())){  
-        elt.target.focus()
-        elt.target.value=""
-        console.log(`Email ${elt.target.value} non valid`)
-    } 
-})
-*/
 
 window.localStorage.clear("user")
 
@@ -22,8 +13,6 @@ mail.addEventListener("change",(elt)=>{
         elt.target.focus()
     } 
 })
-
-
 
 
 pwd.addEventListener("change",(elt)=>{
@@ -50,11 +39,11 @@ bt_submit.addEventListener("click", (elt)=>{
             msg=`${msg}\rSaisie Password obligatoire`
         }
     }
-    console.log(`message = ${msg}`)
+   // console.log(`message = ${msg}`)
     if(msg!==""){
         document.getElementById("err").innerHTML=msg
     }else{
-        console.log("appel api")
+        //console.log("appel api")
         PostApiUser(document.getElementById("email").value,document.getElementById("pwd").value)
         document.getElementById("email").value=""
         document.getElementById("pwd").value=""
@@ -63,5 +52,4 @@ bt_submit.addEventListener("click", (elt)=>{
 })
 
 
-//PostApiUser("sophie.bluel@test.tld","S0phie")
 //PostApiUser("sophie.bluel@test.tld","S0phie")

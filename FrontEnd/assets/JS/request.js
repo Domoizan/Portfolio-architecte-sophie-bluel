@@ -73,18 +73,22 @@ function PostApiWorks(data){
             })
         } else {
             switch (res.status){
+                case 400 :
+                    alert("Mauvaise requête")
+                    break
                 case 401 : 
                     alert("Utilisateur non autorisé.")
-                    break;  
+                    break
                 case 500 : 
-                    alert(`Utilisateur "${userMail}" non reconnu.`)
-                    break;
+                    alert(`Erreur inatendu ${res.status}.`)
+                    break
                 default:
                     alert(`Erreur inatendu ${res.status}.`)
             }
         }
     })
     .catch((err)=> {
+        alert(err)
         console.log(err)
     })
 }
@@ -93,25 +97,26 @@ function PostApiWorks(data){
 
 /**
  * obtenir toutes les categories 
- * non utilisée pour le moment
-
+ * 
+*/
 async function GetApiCategories(){
     fetch("http://localhost:5678/api/categories")
         .then((res)=>{
             if(res.ok){
-                return res.json()
+                return res.json().then((res)=>{
+                    res.forEach(cat => {
+                        LstCat.push([cat.id,cat.name])
+                    });
+                })
+            }else{
+                throw `Erreur inatendu ${res.status}.`
             } 
-        }).then((res)=>{
-            lstCat=res
-            window.localStorage.setItem("LstCat", JSON.stringify(res))
-            ExtractCategories()
-            console.log("liste des categorie : " + lstCat)
         })
         .catch((err)=> {
             console.log(err)
         })
     }
- */
+ 
 
 /**
  * 
@@ -156,7 +161,8 @@ function PostApiUser(userMail,userPwd){
          }
      })
      .catch((err)=> {
-         console.log(err)
+        alert("Erreur inatendu c'est produite : " + err)
+        console.log("Erreur inatendu c'est produite : " + err)
      })
  }
 /**
