@@ -49,12 +49,12 @@ const options_modale_galerie={
     }
 }
 
-/* Affichage de la galerie */
+
 
 GetApiCategories()
 
 
-
+/* Affichage de la galerie */
 if(lst_works===null || refresh){
     //console.log("lst_works===null")
     GetApiWorks()
