@@ -30,21 +30,11 @@ function show_gallery(lst=lst_works,mode="portfolio") {
   }
 }
 
-
-/*
-async function AffGalerie(){
-  if(lst_works===null){
-    lst_works= await GetApiWorks()
-  }else{
-    show_gallery()
-  }
-}
-*/
-
 /**
  * convertion du Set Menus_items en tableau 
  * @returns {[[string,string]]} 
  */
+
 function convSetOnTab(){
   let lst=[]
   const lst_filtre = Array.from(Menu_items)
@@ -58,13 +48,19 @@ function convSetOnTab(){
 /**
  * parcours de l'ensemble des works pour alimenter le set Menu_items de catégorie 
  * auquel on ajoute un premier element d'id '0' et nom 'Tous' 
+ * ne contient que les categories associées à 1 ou plusieurs projets
  */
+
 function ExtractCategories(){
   Menu_items.add("0;Tous")
   for ( work of lst_works){
     Menu_items.add(`${work.category.id};${work.category.name}`)
   }
 }
+
+/**
+ * affichage des boutons de filtrage des projets 
+ */
 
 function show_filtre(){
   if(Menu_items.size===0)ExtractCategories()
@@ -103,13 +99,13 @@ function show_filtre(){
     }
   }
 
-  function newProjet(e){
-      //ajoutPhoto()
-      alert("nouveau projet")
-  }
 
 
-  function MajAfterdel(id,elt){
+/**
+ * Mise a jour de l'affichage des galeries, de lst_works et storLstWorks après une suppression
+ * @param {number} id id du projet supprimé 
+ */
+  function MajAfterdel(id){
     elt=document.getElementById(`ed_${id}`)
     document.getElementById("main").removeChild(elt)
     elt=document.getElementById(`pf_${id}`)
@@ -123,14 +119,27 @@ function show_filtre(){
     alert("Suppression réussie")
   }
 
+
+  /**
+   * Suppression du projet a l'origine de l'evenement e
+   * @param {event} e 
+   */
   function DelProjet(e){
     const id = parseInt(e.target.getAttribute("data-value"))
     if(confirm(`Souhaitez poursuivre la suppression projet ${id}`)){
-      ApiDelWork(id, e.target)
+      ApiDelWork(id)
     }
   }
 
+
+  /**
+   * fermeture de la fenetre modale
+   * @param {event} e 
+   * @param {string} org type de l'evenement
+   * @returns 
+   */
   function CloseModale(e,org){
+    if(modale_galerie === null) return
     if(e.target.id !=="modale" && org==="click") return
     e.preventDefault()
     document.getElementById("modale").setAttribute("style","display:none;")
@@ -138,15 +147,16 @@ function show_filtre(){
   }
 
 
-  /**e
-   * Creation d'une liste d'options
-   * @returns 
+  /**
+   * Creation du tableau pour l'argument  liste d'options pour l'argument lstOpts de form.AddSelect
+   * qui genere le select Category depuis LstCat qui contient toutes les catégories utilisées et non utilisées
+   * @returns {[{text:"string",attr:[{name:"string",val:number}]}}
    */
+  
 function creatListOptions(){
-  if(Menu_items.size===0)ExtractCategories()
-  const tab= convSetOnTab()
+  let tab=LstCat
   let opts=[]
-  tab[0]=['0',""]
+  tab.unshift(['0',""])
   tab.forEach(elt => {
     opts.push({text:elt[1], attr:[{name:"value",val:elt[0]}]})
   })
@@ -154,20 +164,13 @@ function creatListOptions(){
 }
 
 
-function ajoutPhoto(e){
-  const formdata = new FormData()
-  formdata.append("image", document.getElementById("file").files[0])
-  formdata.append("title",document.getElementById("title").value)
-  formdata.append("category",document.getElementById("category").value)
-  PostApiWorks(formdata)
-}
 
   /**
    * creation du formulaire d'ajout de photo
    * 
    */
   function CreatFormAjout(){
-    let form= new Form()
+    let form= new Form("PhotoForm")
     let blk=form.Addblock([{name:"class",val:"modAjout"}],form._form)
     let blk2=form.Addblock([{name:"id",val:"Blk_img"},{name:"class",val:"modAjout__upload"}],blk)
     let blk3=form.Addblock([],blk2)
@@ -179,7 +182,8 @@ function ajoutPhoto(e){
       {name:"type",val:"file"},
       {name:"id",val:"file"},
       {name:"name",val:"file"},
-      {name:"class",val:"modAjout__inputFile"}
+      {name:"class",val:"modAjout__inputFile"},
+      {name:"accept",val:lib_type_accept()}
       ],
       blk3,
       [{evt:"change",fct:ctrlFile}])
@@ -191,7 +195,8 @@ function ajoutPhoto(e){
       blk3)
     form.addText("+ Ajout photo",elt)
     elt=form.AddElt("label",[{name:"class",val:"modAjout__accept"}],blk3)
-    form.addText("jpg, png : 4mo max",elt)
+    form.addText(infoImg,elt)
+
     blk2=form.Addblock([{name:"class",val:"modAjout__block"}],blk)
     elt=form.AddElt("label",[{name:"for",val:"title"},{name:"class",val:"modAjout__forsel"}],blk2)
     form.addText("Titre",elt)
@@ -220,7 +225,7 @@ function ajoutPhoto(e){
 
 
 /**
- * Affichage de la fenetre modale en mode galerie
+ * Affichage de la fenetre modale en mode galerie 
  */
 
 function editGalerie(){
@@ -260,10 +265,10 @@ function formAjoutPhoto(){
   //main.innerText="" 
   modale_galerie.appendBlock(form,main)
   const selImg=document.getElementById("Blk_img")
-  if(blkImg.length!==0){
+  if(blkImg.length !== 0){
     selImg.innerHTML=""
     blkImg.forEach((elt)=>selImg.appendChild(elt))
-  }
+  } 
   document.getElementById("category").selectedIndex=0
   document.getElementById("title").value=""
   document.getElementById("msgErr").innerHTML="Tous les champs doivent être reseignés"
@@ -275,13 +280,20 @@ function formAjoutPhoto(){
   modale_galerie.removeClass("clickable",document.getElementById("bt_Ajout"))
   modale_galerie.removeEvent([{evt:"click",fct:formAjoutPhoto}],document.getElementById("bt_Ajout"))
   modale_galerie.addEvent([{evt:"click",fct:sendForm}],document.getElementById("bt_Ajout"))
+  document.getElementById("PhotoForm").reset()
 }
 
+
+/**
+ * Affichage de l'image selectionnée dans formulaire ajout photo
+ * @param {{}}} file 
+ * @param {HTMLElement} cible 
+ */
 function imgPreview(file,cible){
-  //const cible=document.getElementById("preview")
   blkImg=[]
+  // sauvegarde de la section selfichier
   while (cible.firstChild) {
-    blkImg.push(cible.firstChild) // sauvegarde de la section selfichier
+    blkImg.push(cible.firstChild) 
     cible.removeChild(cible.firstChild);
   }
   let image=document.createElement("img")
@@ -292,7 +304,11 @@ function imgPreview(file,cible){
 
 
 
-
+/**
+ * 
+ * @param {number} val taille de l'image en octet
+ * @returns {number} index de l'unité la plus grande pour val
+ */
 function defUnit(val){
   let idx=0
   while((val / Math.pow(1024,idx)) > 1){idx++}
@@ -313,8 +329,9 @@ const files= e.target.files
 //document.getElementById("preview").innerText=''
 try{
   if(files.length === 0 || files[0]===null)throw "Aucun Fichier selectionnée"
-  const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
-  if( taille > maxSize){
+  //const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
+  if( files[0].size > ( maxSize * Math.pow(1024,idxUnitMaxSize))){
+      const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
       let msg=`Fichier trop volumineux : ${taille} ${unit[defUnit(files[0].size)]} > ${maxSize} ${unit[idxUnitMaxSize]}`
       throw msg
   } 
@@ -328,24 +345,38 @@ catch(err){
   validEng|=1
   EnabledBt(document.getElementById("bt_Ajout"))
   fileEnrg=e.target
+  //console.log("preview")
   imgPreview(files[0],document.getElementById("Blk_img"))
 }
 
+
+/**
+ * Controle si le titre est renseigné 
+ * si ok le bit 2 de validEng est mis à 1
+ * sinon le bit 2 de validEng est mis à 0
+ * @param {event} e 
+ * @returns 
+ */
 function ctrlEmptyTitle(e){
   let chk=false
     cible=e.target  
-    console.log(`titre = ${cible.value.trim()}`)
     if(cible.value.trim()===""){
-      validEng= validEng & 5  
+      validEng &= 5  // après affectation le bit 2 est à 0 
       chk = false
       }else{
-      validEng|=2
+      validEng |= 2 // après affectation le bit 2 est à 1
       chk = true
     }
     EnabledBt(document.getElementById("bt_Ajout"))
     return chk
 }
 
+
+/**
+ * bascule le bouton Valider de l'état actif à non actif
+ * 
+ * @param {HTMLElement} cible bouton 
+ */
 function toggleBtAjout(cible){
   if(validEng===7){
     cible.classList.remove("bgColorGrey")
@@ -358,38 +389,41 @@ function toggleBtAjout(cible){
   }
 }
 
+/**
+ * Defini l'etat du formulaire et met à jour le message à destination de l'utilisateur
+ * @param {HTMLElement} cible message 
+ */
 function EnabledBt(cible){
-  console.log("validEng : " + validEng)
   switch (validEng){
   case 0 :
     msg="Tous les champs doient-être renseigné"
     document.getElementById("file").focus()
     break
-  case 1 : 
+  case 1 : //image ok
     document.getElementById("title").focus()
     msg="Il vous reste a renseigner Le tire et la catégorie"
     break
-  case 2 :
+  case 2 : //titre ok
     msg="Il vous reste a sélectionner une photo et la catégorie"
     document.getElementById("file").focus()
     break
-  case 3 :
+  case 3 : // image et titre ok
     document.getElementById("category").focus()
     msg="Il vous reste a sélectionner la catégorie"
     break
-  case 4 :
+  case 4 : // catégorie ok
     msg="Il vous reste a sélectionnez une photo et renseignez le titre"
     document.getElementById("file").focus()
     break
-  case 5 :
+  case 5 :  // image et catégorie ok
     msg="Il vous reste a renseignez le titre"
     document.getElementById("title").focus()
     break
-  case 6 :
+  case 6 : // titre et catégorie ok
     msg="Il vous reste a sélectionnez une photo"
     document.getElementById("file").focus()
     break
-  case 7 :
+  case 7 : // formulaire ok le bt valider peut etre activé
     msg=""
     document.getElementById("bt_Ajout").focus()
   }
@@ -397,19 +431,30 @@ function EnabledBt(cible){
   toggleBtAjout(cible)
 }
 
+/**
+ * Controle si une categorie a bien etait selectionnée
+ * si ok le bit 3 de validEng est mis à 1
+ * sinon le bit 3 de validEng est mis à 0
+ * @param {event} e 
+ * @returns 
+ */
+
 function ctrlSelct(e){
   let chk=false
   if(parseInt(e.target.selectedIndex) > 0){
-    validEng|=4
+    validEng|=4 // après affectation le bit 3 est à 0
     chk=true
   }else{
-    validEng&=3
+    validEng&=3 //// après affectation le bit 3 est à 0
     chk=false
   }
   EnabledBt(document.getElementById("bt_Ajout"))
   return chk
 }
 
+/**
+ * creation de l'objet formaData 
+*/
 function sendForm(){
   const formdata = new FormData()
   formdata.append("image", fileEnrg.files[0])
@@ -420,7 +465,12 @@ function sendForm(){
   document.getElementById("modale").setAttribute("style","display:none;")
   document.getElementById("modale").removeEventListener("click",CloseModale)
 }
+ 
 
+/**
+ * Mise a jour de la galerie, de lst_works et de storLstWorks après ajout d'un projet
+ * @param {{}} res Objet work
+ */
 function AppendCardLstWork(res){
   let card = new work_card(res)
   lst_works.push(res)
