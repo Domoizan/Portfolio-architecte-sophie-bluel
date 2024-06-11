@@ -1,32 +1,3 @@
-
-/* Durée de validité de StorLstWorks en ms */
-const validityTime=(3600*1000)
-/* Liste des travaux */
-/**
- * @var {{}}storLstWorks
- */
-let storLstWorks=JSON.parse(window.localStorage.getItem("storLstWorks"))
-let lst_works=(storLstWorks!==null)?storLstWorks.lst_works:null
-/* constantes liées aux fichiers images */
-const unit=["o","Ko","Mo","Go","To"] //unité de taille de fichier
-const idxUnitMaxSize = 2 // index de l'unité de taille de maxSize
-const maxSize = 4 // taille max du ficher dans l'unité selectionnée
-const typeFile = [    // liste des type de fichier acceptés
-    "image/jpeg",
-    "image/png"
-]
-
-/**
- * info user authentifié
- * @var {userid:number,token:'md5sum'} user 
- */
-let user=JSON.parse(window.localStorage.getItem("user"))
-/* liste categories */
-let LstCat=JSON.parse(window.localStorage.getItem("LstCat"))
-/* utilisée pour stocker la liste des catégories  */
-let Menu_items = new Set()
-/* filtre actif */
-let filtre_actif = 0
 /* options fenetre modale pour la galerie photo + ajout et suppr. photo*/
 const options_modale_galerie={
     modale : {
@@ -78,16 +49,12 @@ const options_modale_galerie={
     }
 }
 
-let validEng=0
-let blkImg=[] // permet de garder le block de selection de fichier
-let fileEnrg=null //sauvegade de file[0] avant preview
-let modale_galerie=null
-let form=null
-const refresh=(storLstWorks!==null && ((Date.now() - parseInt(storLstWorks.timeEnrg)) > validityTime))?true:false
+
+
+GetApiCategories()
+
 
 /* Affichage de la galerie */
-//AffGalerie()
-
 if(lst_works===null || refresh){
     //console.log("lst_works===null")
     GetApiWorks()
@@ -110,18 +77,16 @@ if(user===null){
     document.getElementById("edit_intro").classList.remove("hidden")
     document.getElementById("edit").addEventListener("click",editGalerie)
     document.getElementById("login").innerHTML="Logout"
-    //document.getElementById("login").removeChild(document.getElementById("login").firstChild)
-    //document.getElementById("login").appendChild(document.createTextNode("Logout"))
 }
 
 // navigation au clavier 
 
-
+/*
 const focusInModale = function (e){
     e.preventDefault()
     console.log(document.getElementById("content").querySelector('img'))
 }
-
+*/
 
 window.addEventListener("keydown", (e) => {
         
@@ -134,7 +99,6 @@ window.addEventListener("keydown", (e) => {
             focusInModale(e)
         }
         */
-        
     }
 )
 

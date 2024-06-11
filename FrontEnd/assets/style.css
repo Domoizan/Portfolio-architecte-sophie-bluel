@@ -72,6 +72,7 @@ table {
   align-items: center;
   width: 50vw;
   height: 95vh;
+  min-height: 600px;
   border-radius: 1em;
 }
 .modale__content h2 {
@@ -87,7 +88,7 @@ table {
   flex-wrap: wrap;
   overflow: auto;
   justify-content: space-between;
-  align-content: space-between;
+  gap: 0.5em;
   width: 80%;
   height: 100%;
   gap: 10px;
@@ -156,6 +157,7 @@ table {
 .modale__err {
   color: red;
   text-align: center;
+  font-weight: 700;
 }
 
 .bgColorGrey {

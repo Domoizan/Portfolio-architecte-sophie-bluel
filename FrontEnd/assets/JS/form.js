@@ -8,9 +8,9 @@ class Form {
     _form=null
     _blocks=[]
 
-    constructor(){
+    constructor(id){
         this._form=document.createElement("form")
-        //this.setattr([{name:"method",val:"get"}], this._form)
+        this.setattr([{name:"id",val:id}], this._form)
     }
 
     /**
