@@ -36,7 +36,7 @@ bt_submit.addEventListener("click", (elt)=>{
             msg="Saisie Pasword obligatoire"
             document.getElementById("pwd").focus()
         }else{
-            msg=`${msg}\rSaisie Password obligatoire`
+            msg=`Saisie Email et Password obligatoire`
         }
     }
    // console.log(`message = ${msg}`)

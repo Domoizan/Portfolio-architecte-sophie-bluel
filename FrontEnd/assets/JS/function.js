@@ -233,10 +233,8 @@ function editGalerie(){
     options_modale_galerie.main.innerhtml=(show_gallery(lst_works,"edit"))
     modale_galerie= new modale(document.getElementById("modale-contener"),"galerie",options_modale_galerie)
     modale_galerie.showModale()
-    document.getElementById("btBack").setAttribute("tabindex","0")
-    document.getElementById("btClose").setAttribute("tabindex","0")
   }else{
-    modale_galerie.ChangeHtmlContent(show_gallery(lst_works,"edit",null))
+    modale_galerie.ChangeHtmlContent(show_gallery(lst_works,"edit"))
     modale_galerie.addEvent([{evt:"click",fct:formAjoutPhoto}],document.getElementById("bt_Ajout"))
     modale_galerie.addClass("hidden",document.getElementById("btBack"))
     modale_galerie.ChangeText("Galerie",document.getElementById("Galerie_title"))
@@ -326,10 +324,8 @@ function defUnit(val){
  */
 function ctrlFile(e){
 const files= e.target.files
-//document.getElementById("preview").innerText=''
 try{
   if(files.length === 0 || files[0]===null)throw "Aucun Fichier selectionnée"
-  //const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
   if( files[0].size > ( maxSize * Math.pow(1024,idxUnitMaxSize))){
       const taille = Math.round((files[0].size*100) / Math.pow(1024,idxUnitMaxSize))/100
       let msg=`Fichier trop volumineux : ${taille} ${unit[defUnit(files[0].size)]} > ${maxSize} ${unit[idxUnitMaxSize]}`
@@ -345,7 +341,6 @@ catch(err){
   validEng|=1
   EnabledBt(document.getElementById("bt_Ajout"))
   fileEnrg=e.target
-  //console.log("preview")
   imgPreview(files[0],document.getElementById("Blk_img"))
 }
 
