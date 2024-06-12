@@ -12,7 +12,6 @@ class Form {
         this._form=document.createElement("form")
         this.setattr([{name:"id",val:id}], this._form)
     }
-
     /**
      * 
      * @param {[{name:"string",val:"string"}]} tab_attr liste des attribut de l'elt cible
@@ -23,14 +22,12 @@ class Form {
             cible.setAttribute(elt.name,elt.val)
         })
     }
-
     /**
      * Ajout d'un block div dans l'elt cible
      * @param {} tab_attr liste des attributs du tag div
      * @param {HTMLElement} cible block parent
      * @returns HTMLElement 
      */
-
     Addblock(tab_attr,cible){
         let block=document.createElement("div")
         this.setattr(tab_attr,block)
@@ -38,7 +35,6 @@ class Form {
         this._blocks.push(block)
         return block
     }
-
     /**
      * Ajout d'un tag html dans l'elt parent
      * @param {"string"} tag
@@ -53,7 +49,6 @@ class Form {
         cible.appendChild(elt)
         return elt
     }
-
     /**
      * @param {[{name:"string",val:"string"}]} lstAttr liste des attributs du tag select
      * @param {[{text:"string",attr:[{name:"string",val:"string"}]}]} lstOpts liste des options et de leurs attributs
@@ -66,7 +61,6 @@ class Form {
         if(tab_events!==null)this.addEvent(tab_events,sel)
         cible.appendChild(sel)
     }
-
     /**
      * Ajout d'option dans le tag cible
      * @param {[{text:"string",attr:[{name:"string",val:"string"}]}]} lstOpts liste des options et de leurs attributs
@@ -81,11 +75,9 @@ class Form {
             cible.appendChild(opt)
         })
     }
-
     addText(texte,cible){
         cible.appendChild(document.createTextNode(texte))
     }
-
     /**
      * Ajout d'eventListener ssur l'elt cilble
      * @param {[{evt:"event",fct:"function"}]} events 

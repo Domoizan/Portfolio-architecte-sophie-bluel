@@ -7,19 +7,21 @@ async function GetApiWorks(){
 fetch("http://localhost:5678/api/works")
     .then((res)=>{
         if(res.ok){
-            return res.json()
+            return res.json().then((res)=>{
+                lst_works=res
+                storLstWorks={
+                    timeEnrg : Date.now(),
+                    lst_works : res
+                }
+                window.localStorage.setItem("storLstWorks", JSON.stringify(storLstWorks))
+                //window.localStorage.setItem("lst_works", JSON.stringify(res))
+                show_gallery()
+                if(user===null)show_filtre()
+                return res
+            })
+        }else{
+            throw `Erreur inatendu ${res.status}.`
         } 
-    }).then((res)=>{
-        lst_works=res
-        storLstWorks={
-            timeEnrg : Date.now(),
-            lst_works : res
-        }
-        window.localStorage.setItem("storLstWorks", JSON.stringify(storLstWorks))
-        //window.localStorage.setItem("lst_works", JSON.stringify(res))
-        show_gallery()
-        if(user===null)show_filtre()
-        return res
     })
     .catch((err)=> {
         console.log(err)
@@ -182,7 +184,7 @@ curl -X 'DELETE'
   -H 'accept: *\/*' 
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNjUzMjg5NywiZXhwIjoxNzE2NjE5Mjk3fQ.r4WoSOALD2JETh-j5rsfr1xhRNNipUOAOWr6XDWOays'
 */
-function ApiDelWork(id, elt){
+function ApiDelWork(id){
     const auth=`Bearer ${user.token}`
     const head={
         "accept" :"*/*",
@@ -197,14 +199,14 @@ function ApiDelWork(id, elt){
         
         if(res.ok){
             console.log(res)
-            MajAfterdel(id, elt)
+            MajAfterdel(id)
         } else {
             switch (res.status){
                 case 401 : 
                     alert("Utilisateur non autorisé.")
                     break;  
                 case 500 : 
-                    alert(`Utilisateur "${userMail}" non reconnu.`)
+                    alert(`Erreur inatendu ${res.status}.`)
                     break;
                 default:
                     alert(`Erreur inatendu ${res.status}.`)
