@@ -70,10 +70,10 @@ if(lst_works===null || refresh){
 if(user===null){
     if(lst_works!==null && !refresh)show_filtre()
     document.getElementById("edit").classList.add("hidden")
-    document.getElementById("edit_intro").classList.add("hidden")
+    document.getElementById("modEdit").classList.add("hidden")
 }else{
     document.getElementById("edit").classList.remove("hidden")
-    document.getElementById("edit_intro").classList.remove("hidden")
+    document.getElementById("modEdit").classList.remove("hidden")
     document.getElementById("edit").addEventListener("click",editGalerie)
     document.getElementById("login").innerHTML="Logout"
 }
